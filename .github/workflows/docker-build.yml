@@ -1,0 +1,38 @@
+name: Build and Push Sneat Docker
+
+on:
+  push:
+    branches:
+      - main  # أو غيّر لاسم الفرع الأساسي عندك
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Build project
+      run: dotnet build AspnetCoreMvcFull.sln --configuration Release
+
+    - name: Publish project
+      run: dotnet publish AspnetCoreMvcFull.sln -c Release -o ./publish
+
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Build and Push Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: true
+        tags: your-dockerhub-username/sneat-app:latest
