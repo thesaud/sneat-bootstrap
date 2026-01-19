@@ -32,7 +32,7 @@ jobs:
           context: .
           file: Dockerfile
           push: true
-          tags: your-dockerhub-username/sneat-app:latest
+          tags: thesaud/sneat-app:latest
 
       # 5️⃣ اختياري: تشغيل الصورة للتأكد من أنها تعمل
       - name: Test Docker image
